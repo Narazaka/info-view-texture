@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import './App.css';
 
 function App() {
@@ -13,6 +13,14 @@ function App() {
   const [canvasHeight, setCanvasHeight] = useState(300);
   const [padding, setPadding] = useState(20);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  const debounce = (func: Function, delay: number) => {
+    let timeoutId: NodeJS.Timeout;
+    return (...args: any[]) => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => func(...args), delay);
+    };
+  };
 
   const wrapText = (ctx: CanvasRenderingContext2D, text: string, x: number, y: number, maxWidth: number, lineHeight: number, charWrap: boolean = false) => {
     if (charWrap) {
@@ -49,7 +57,7 @@ function App() {
     }
   };
 
-  const handleDraw = () => {
+  const drawCanvas = () => {
     const canvas = canvasRef.current;
     if (canvas) {
       const ctx = canvas.getContext('2d');
@@ -97,6 +105,12 @@ function App() {
       }
     }
   };
+
+  const debouncedDrawCanvas = debounce(drawCanvas, 300);
+
+  useEffect(() => {
+    debouncedDrawCanvas();
+  }, [title, quote, description, textColor, bgColor, borderColor, borderWidth, canvasWidth, canvasHeight, padding]);
 
   const handleDownload = () => {
     const canvas = canvasRef.current;
@@ -172,8 +186,6 @@ function App() {
           onChange={(e) => setPadding(Number(e.target.value))}
           placeholder="Padding"
         />
-        <button onClick={handleDraw}>Draw</button>
-        <button onClick={handleDownload}>Download Image</button>
       </div>
       <canvas
         ref={canvasRef}

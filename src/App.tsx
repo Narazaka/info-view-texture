@@ -11,7 +11,7 @@ import {
 import { useState, useRef, useReducer, useCallback, useEffect } from "react";
 import type { TextProps } from "./util/TextProps";
 import { TextPropsView } from "./TextPropsView";
-import DrawText from "./drawText";
+import DrawText from "./DrawText";
 import html2canvas from "html2canvas";
 
 type ColorPreset = {

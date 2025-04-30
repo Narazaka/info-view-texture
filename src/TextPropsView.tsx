@@ -22,23 +22,23 @@ export function TextPropsView({
   const fonts = useFonts();
   return (
     <Grid>
-      <Grid.Col span={6}>
+      <Grid.Col span={3}>
         <Textarea
           label={title}
           value={text.text}
           onChange={(e) => setText({ text: e.target.value })}
         />
       </Grid.Col>
-      <Grid.Col span={6}>
+      <Grid.Col span={9}>
         <Grid>
-          <Grid.Col span={3}>
+          <Grid.Col span={2}>
             <NumberInput
               label="Font Size"
               value={text.fontSize}
               onChange={(value) => setText({ fontSize: Number(value) })}
             />
           </Grid.Col>
-          <Grid.Col span={3}>
+          <Grid.Col span={2}>
             <NumberInput
               label="Line Height"
               value={text.lineHeight}
@@ -46,14 +46,14 @@ export function TextPropsView({
               step={0.1}
             />
           </Grid.Col>
-          <Grid.Col span={3}>
+          <Grid.Col span={2}>
             <NumberInput
               label="Stroke Width"
-              value={text.strokeWidth}
-              onChange={(value) => setText({ strokeWidth: Number(value) })}
+              value={text.outlineWidth}
+              onChange={(value) => setText({ outlineWidth: Number(value) })}
             />
           </Grid.Col>
-          <Grid.Col span={3}>
+          <Grid.Col span={2}>
             <Select
               label="Alignment"
               value={text.textAlign}
@@ -70,16 +70,7 @@ export function TextPropsView({
             />
           </Grid.Col>
 
-          <Grid.Col span={9}>
-            <Autocomplete
-              label="Font Family"
-              value={text.fontFamily}
-              onChange={(value) => setText({ fontFamily: value })}
-              data={fonts}
-            />
-          </Grid.Col>
-
-          <Grid.Col span={3}>
+          <Grid.Col span={2}>
             <Switch
               label="Bold"
               checked={text.fontWeight === "bold"}
@@ -91,7 +82,7 @@ export function TextPropsView({
             />
           </Grid.Col>
 
-          <Grid.Col span={6}>
+          <Grid.Col span={3}>
             <ColorInput
               label="Text Color"
               format="rgba"
@@ -99,12 +90,21 @@ export function TextPropsView({
               onChange={(value) => setText({ textColor: value })}
             />
           </Grid.Col>
-          <Grid.Col span={6}>
+          <Grid.Col span={3}>
             <ColorInput
               label="Stroke Color"
               format="rgba"
-              value={text.strokeColor}
-              onChange={(value) => setText({ strokeColor: value })}
+              value={text.outlineColor}
+              onChange={(value) => setText({ outlineColor: value })}
+            />
+          </Grid.Col>
+
+          <Grid.Col span={6}>
+            <Autocomplete
+              label="Font Family"
+              value={text.fontFamily}
+              onChange={(value) => setText({ fontFamily: value })}
+              data={fonts}
             />
           </Grid.Col>
         </Grid>

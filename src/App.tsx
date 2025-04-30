@@ -1,25 +1,48 @@
 import {
+  Autocomplete,
   Button,
   ColorInput,
   Container,
   Grid,
-  Group,
   NumberInput,
   Stack,
   Title,
 } from "@mantine/core";
-import { useState, useRef, useEffect, useReducer } from "react";
-import { useDebouncedCallback } from "use-debounce";
-import { drawText } from "./util/drawText";
+import { useState, useRef, useReducer, useCallback, useEffect } from "react";
 import type { TextProps } from "./util/TextProps";
 import { TextPropsView } from "./TextPropsView";
-import { useFonts } from "./util/fonts";
+import DrawText from "./drawText";
+import html2canvas from "html2canvas";
+
+type ColorPreset = {
+  textColor: string;
+  outlineColor: string;
+  bgColor: string;
+  borderColor: string;
+  invertQuote: boolean;
+};
+const colorPresets: ColorPreset[] = [
+  {
+    textColor: "#fff",
+    outlineColor: "#ff00a5",
+    bgColor: "#ffa7fb",
+    borderColor: "#ff00a5",
+    invertQuote: true,
+  },
+  {
+    textColor: "#fff",
+    outlineColor: "#000",
+    bgColor: "#fff",
+    borderColor: "#000",
+    invertQuote: false,
+  },
+];
 
 const defaultTextProps: TextProps = {
   text: "",
-  textColor: "#333",
-  strokeColor: "#000",
-  strokeWidth: 5,
+  textColor: "#fff",
+  outlineColor: "#000",
+  outlineWidth: 7,
   fontSize: 40,
   fontFamily: "Arial",
   fontWeight: "normal",
@@ -37,106 +60,70 @@ const useTextProps = (initialState: Partial<TextProps> = {}) => {
 };
 
 function App() {
-  const fonts = useFonts();
   const [title, setTitle] = useTextProps({
     text: "最強無敵生物",
-    fontFamily: "GenEi Nu Gothic EB",
+    fontFamily: "GenEi M Gothic v2 Black",
     fontSize: 52,
+    textColor: "#fff",
+    outlineColor: "#ff00a5",
   });
   const [quote, setQuote] = useTextProps({
     text: "「私は最強無敵生物」",
     fontFamily: "GenEi POPle Black",
+    textColor: "#ff00a5",
+    outlineColor: "#fff",
   });
   const [description, setDescription] = useTextProps({
     text: "これは説明です\nとてもつよい",
-    fontFamily: "GenEi Nu Gothic EB",
+    fontFamily: "GenEi M Gothic v2 Black",
+    textColor: "#fff",
+    outlineColor: "#ff00a5",
   });
   const [bgColor, setBgColor] = useState("#fff");
   const [borderColor, setBorderColor] = useState("#000");
   const [borderWidth, setBorderWidth] = useState(12);
   const [canvasWidth, setCanvasWidth] = useState(512);
   const [canvasHeight, setCanvasHeight] = useState(256);
-  const [padding, setPadding] = useState(22);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [paddingX, setPaddingX] = useState(10);
+  const [paddingY, setPaddingY] = useState(5);
+  const targetRef = useRef<HTMLDivElement>(null);
 
-  const drawCanvas = () => {
-    const canvas = canvasRef.current;
-    if (canvas) {
-      const ctx = canvas.getContext("2d");
-      if (ctx) {
-        // Clear the canvas
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const applyColorPreset = useCallback(
+    (preset: ColorPreset) => {
+      setTitle({
+        textColor: preset.textColor,
+        outlineColor: preset.outlineColor,
+      });
+      setQuote({
+        textColor: preset.invertQuote ? preset.outlineColor : preset.textColor,
+        outlineColor: preset.invertQuote
+          ? preset.textColor
+          : preset.outlineColor,
+      });
+      setDescription({
+        textColor: preset.textColor,
+        outlineColor: preset.outlineColor,
+      });
+      setBgColor(preset.bgColor);
+      setBorderColor(preset.borderColor);
+    },
+    [setDescription, setQuote, setTitle],
+  );
 
-        // Set background color
-        ctx.fillStyle = bgColor;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        // Draw border
-        ctx.strokeStyle = borderColor;
-        ctx.lineWidth = borderWidth * 2;
-        ctx.strokeRect(0, 0, canvas.width, canvas.height);
-
-        let y = padding;
-        // Draw title
-        if (title) {
-          y += drawText({
-            ctx,
-            y,
-            padding,
-            props: title,
-          });
-        }
-
-        // Draw quote
-        if (quote) {
-          y += drawText({
-            ctx,
-            y,
-            padding,
-            props: quote,
-          });
-        }
-
-        // Draw description
-        if (description) {
-          drawText({
-            ctx,
-            y,
-            padding,
-            props: description,
-          });
-        }
-      }
-    }
-  };
-
-  const debouncedDrawCanvas = useDebouncedCallback(drawCanvas, 300);
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    debouncedDrawCanvas();
-  }, [
-    title,
-    quote,
-    description,
-    bgColor,
-    borderColor,
-    borderWidth,
-    canvasWidth,
-    canvasHeight,
-    padding,
-    debouncedDrawCanvas,
-    fonts,
-  ]);
+    applyColorPreset(colorPresets[0]);
+  }, [applyColorPreset]);
 
-  const handleDownload = () => {
-    const canvas = canvasRef.current;
-    if (canvas) {
+  const handleDownloadSVG = () => {
+    const target = targetRef.current;
+    if (!target) return;
+    html2canvas(target).then((canvas) => {
       const link = document.createElement("a");
-      link.download = "image.png";
       link.href = canvas.toDataURL("image/png");
+      link.download = "canvas.png";
       link.click();
-    }
+      link.remove();
+    });
   };
 
   return (
@@ -153,9 +140,16 @@ function App() {
         <Grid>
           <Grid.Col span={3}>
             <NumberInput
-              value={padding}
-              onChange={(e) => setPadding(Number(e))}
-              label="Padding"
+              value={paddingX}
+              onChange={(e) => setPaddingX(Number(e))}
+              label="Padding X"
+            />
+          </Grid.Col>
+          <Grid.Col span={3}>
+            <NumberInput
+              value={paddingY}
+              onChange={(e) => setPaddingY(Number(e))}
+              label="Padding Y"
             />
           </Grid.Col>
           <Grid.Col span={3}>
@@ -182,28 +176,60 @@ function App() {
             />
           </Grid.Col>
           <Grid.Col span={3}>
-            <NumberInput
-              value={canvasWidth}
+            <Autocomplete
+              type="number"
+              min={1}
+              value={`${canvasWidth}`}
               onChange={(e) => setCanvasWidth(Number(e))}
               label="Canvas Width"
+              data={["128", "256", "512", "1024", "2048", "4096"]}
             />
           </Grid.Col>
           <Grid.Col span={3}>
-            <NumberInput
-              value={canvasHeight}
+            <Autocomplete
+              type="number"
+              min={1}
+              value={`${canvasHeight}`}
               onChange={(e) => setCanvasHeight(Number(e))}
               label="Canvas Height"
+              data={["128", "256", "512", "1024", "2048", "4096"]}
             />
           </Grid.Col>
+          <Grid.Col span={12}>
+            {colorPresets.map((preset, index) => (
+              <Button
+                // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                key={index}
+                onClick={() => applyColorPreset(preset)}
+                color={preset.outlineColor}
+                style={{ marginRight: "1em" }}
+              >
+                {" "}
+              </Button>
+            ))}
+          </Grid.Col>
         </Grid>
-        <Button onClick={handleDownload}>Download Image</Button>
+        <Button onClick={handleDownloadSVG}>Download PNG</Button>
       </Stack>
-      <canvas
-        ref={canvasRef}
-        width={canvasWidth}
-        height={canvasHeight}
-        style={{ border: "1px dashed #000" }}
-      />
+      <div style={{ marginTop: "1em" }}>
+        <div
+          ref={targetRef}
+          style={{
+            margin: "auto",
+            width: canvasWidth,
+            height: canvasHeight,
+            border: `${borderWidth}px solid ${borderColor}`,
+            boxSizing: "border-box",
+            backgroundColor: bgColor,
+            position: "relative",
+            padding: `${paddingY}px ${paddingX}px`,
+          }}
+        >
+          <DrawText props={title} />
+          <DrawText props={quote} />
+          <DrawText props={description} />
+        </div>
+      </div>
     </Container>
   );
 }

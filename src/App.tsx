@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { useDebouncedCallback } from 'use-debounce';
 import './App.css';
 
 function App() {
@@ -13,14 +14,6 @@ function App() {
   const [canvasHeight, setCanvasHeight] = useState(300);
   const [padding, setPadding] = useState(20);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  const debounce = (func: Function, delay: number) => {
-    let timeoutId: NodeJS.Timeout;
-    return (...args: any[]) => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => func(...args), delay);
-    };
-  };
 
   const wrapText = (ctx: CanvasRenderingContext2D, text: string, x: number, y: number, maxWidth: number, lineHeight: number, charWrap: boolean = false) => {
     if (charWrap) {
@@ -106,7 +99,7 @@ function App() {
     }
   };
 
-  const debouncedDrawCanvas = debounce(drawCanvas, 300);
+  const debouncedDrawCanvas = useDebouncedCallback(drawCanvas, 300);
 
   useEffect(() => {
     debouncedDrawCanvas();

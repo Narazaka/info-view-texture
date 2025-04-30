@@ -9,6 +9,7 @@ function DrawText({ props, width }: { props: TextProps; width: number }) {
             width: `${width / props.scaleX}px`,
             fontSize: `${props.fontSize}px`,
             fontFamily: `"${props.fontFamily}"`,
+            fontWeight: props.fontWeight,
             color: props.textColor,
             textAlign: props.textAlign,
             lineHeight: `${props.lineHeight}em`,

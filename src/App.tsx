@@ -179,14 +179,14 @@ function App() {
           fonts={fonts}
         />
         <Grid>
-          <Grid.Col span={3}>
+          <Grid.Col span={1.5}>
             <NumberInput
               value={paddingX}
               onChange={(e) => setPaddingX(Number(e))}
               label="Padding X"
             />
           </Grid.Col>
-          <Grid.Col span={3}>
+          <Grid.Col span={1.5}>
             <NumberInput
               value={paddingY}
               onChange={(e) => setPaddingY(Number(e))}

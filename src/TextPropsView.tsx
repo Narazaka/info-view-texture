@@ -54,6 +54,15 @@ export function TextPropsView({
             />
           </Grid.Col>
           <Grid.Col span={2}>
+            <NumberInput
+              label="Scale X"
+              value={text.scaleX}
+              step={0.1}
+              min={0.1}
+              onChange={(value) => setText({ scaleX: Number(value) })}
+            />
+          </Grid.Col>
+          <Grid.Col span={2}>
             <Select
               label="Alignment"
               value={text.textAlign}

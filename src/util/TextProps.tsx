@@ -9,5 +9,6 @@ export type TextProps = {
   textAlign: CanvasTextAlign;
   textBaseline: CanvasTextBaseline;
   lineHeight: number;
+  scaleX: number;
   charWrap: boolean;
 };

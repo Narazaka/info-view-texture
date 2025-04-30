@@ -53,6 +53,7 @@ const defaultTextProps: TextProps = {
   textAlign: "left",
   textBaseline: "top",
   lineHeight: 1.3,
+  scaleX: 1,
   charWrap: true,
 };
 const useTextProps = (initialState: Partial<TextProps> = {}) => {
@@ -289,9 +290,18 @@ function App() {
             padding: `${paddingY}px ${paddingX}px`,
           }}
         >
-          <DrawText props={title} />
-          <DrawText props={quote} />
-          <DrawText props={description} />
+          <DrawText
+            props={title}
+            width={canvasWidth - (paddingX + borderWidth) * 2}
+          />
+          <DrawText
+            props={quote}
+            width={canvasWidth - (paddingX + borderWidth) * 2}
+          />
+          <DrawText
+            props={description}
+            width={canvasWidth - (paddingX + borderWidth) * 2}
+          />
         </div>
       </div>
     </Container>

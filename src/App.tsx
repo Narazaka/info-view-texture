@@ -77,7 +77,7 @@ function App() {
 
   const [title, setTitle] = useTextProps({
     text: "最強無敵生物",
-    fontFamily: "GenEi M Gothic v2 Black",
+    fontFamily: "Rounded-X Mgen+ 1p black",
     fontSize: 52,
     textColor: "#fff",
     outlineColor: "#ff00a5",
@@ -90,7 +90,7 @@ function App() {
   });
   const [description, setDescription] = useTextProps({
     text: "これは説明です\nとてもつよい",
-    fontFamily: "GenEi M Gothic v2 Black",
+    fontFamily: "Rounded-X Mgen+ 1p heavy",
     textColor: "#fff",
     outlineColor: "#ff00a5",
   });

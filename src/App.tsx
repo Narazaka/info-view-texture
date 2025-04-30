@@ -10,8 +10,8 @@ function App() {
   const [bgColor, setBgColor] = useState('#f0f0f0');
   const [borderColor, setBorderColor] = useState('#000');
   const [borderWidth, setBorderWidth] = useState(5);
-  const [canvasWidth, setCanvasWidth] = useState(500);
-  const [canvasHeight, setCanvasHeight] = useState(300);
+  const [canvasWidth, setCanvasWidth] = useState(512);
+  const [canvasHeight, setCanvasHeight] = useState(256);
   const [padding, setPadding] = useState(20);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -179,6 +179,7 @@ function App() {
           onChange={(e) => setPadding(Number(e.target.value))}
           placeholder="Padding"
         />
+        <button onClick={handleDownload}>Download Image</button>
       </div>
       <canvas
         ref={canvasRef}

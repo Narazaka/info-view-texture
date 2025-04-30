@@ -1,4 +1,5 @@
 import {
+  Alert,
   Autocomplete,
   Button,
   ColorInput,
@@ -13,6 +14,8 @@ import type { TextProps } from "./util/TextProps";
 import { TextPropsView } from "./TextPropsView";
 import DrawText from "./DrawText";
 import html2canvas from "html2canvas";
+import { useLocalStorage } from "@mantine/hooks";
+import { useFonts } from "./util/fonts";
 
 type ColorPreset = {
   textColor: string;
@@ -59,7 +62,19 @@ const useTextProps = (initialState: Partial<TextProps> = {}) => {
   return [props, setProps] as const;
 };
 
+const fontsAllowedStatus = {
+  ask: 0,
+  allow: 1,
+  deny: 2,
+};
+
 function App() {
+  const [fontsAllowed, setFontsAllowed] = useLocalStorage({
+    key: "fonts-allowed",
+    defaultValue: fontsAllowedStatus.ask,
+  });
+  const fonts = useFonts(fontsAllowed === fontsAllowedStatus.allow);
+
   const [title, setTitle] = useTextProps({
     text: "最強無敵生物",
     fontFamily: "GenEi M Gothic v2 Black",
@@ -130,12 +145,38 @@ function App() {
     <Container>
       <Stack>
         <Title>Text to Image Generator</Title>
-        <TextPropsView title="Title" text={title} setText={setTitle} />
-        <TextPropsView title="Quote" text={quote} setText={setQuote} />
+        {fontsAllowed !== fontsAllowedStatus.allow && (
+          <Alert>
+            <Title>ローカルフォント一覧を許可</Title>
+            <p>
+              PCにインストールされているフォントを名前補完するには、ローカルフォントの読み込みを許可してください。
+            </p>
+            <Button
+              onClick={() => {
+                setFontsAllowed(fontsAllowedStatus.allow);
+              }}
+            >
+              Allow
+            </Button>
+          </Alert>
+        )}
+        <TextPropsView
+          title="Title"
+          text={title}
+          setText={setTitle}
+          fonts={fonts}
+        />
+        <TextPropsView
+          title="Quote"
+          text={quote}
+          setText={setQuote}
+          fonts={fonts}
+        />
         <TextPropsView
           title="Description"
           text={description}
           setText={setDescription}
+          fonts={fonts}
         />
         <Grid>
           <Grid.Col span={3}>

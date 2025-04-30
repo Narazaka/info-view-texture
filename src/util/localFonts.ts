@@ -24,7 +24,7 @@ export async function getFontsCached() {
   return fonts;
 }
 
-export function useLocalFonts() {
+export function useLocalFonts(allowLocalFonts: boolean) {
   const [fonts, setFonts] = useState<string[]>([
     "Meiryo",
     "Meiryo UI",
@@ -35,7 +35,7 @@ export function useLocalFonts() {
     "Verdana",
   ]);
   useEffect(() => {
-    getFontsCached().then(setFonts);
-  }, []);
+    if (allowLocalFonts) getFontsCached().then(setFonts);
+  }, [allowLocalFonts]);
   return fonts;
 }

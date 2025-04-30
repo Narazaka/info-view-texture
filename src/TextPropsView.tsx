@@ -8,18 +8,18 @@ import {
   Autocomplete,
 } from "@mantine/core";
 import type { TextProps } from "./util/TextProps";
-import { useFonts } from "./util/fonts";
 
 export function TextPropsView({
   title,
   text,
   setText,
+  fonts,
 }: {
   title: string;
   text: TextProps;
   setText: (newTitle: Partial<TextProps>) => void;
+  fonts: string[];
 }) {
-  const fonts = useFonts();
   return (
     <Grid>
       <Grid.Col span={3}>

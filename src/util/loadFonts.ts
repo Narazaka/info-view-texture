@@ -23,85 +23,73 @@ const roundedMgenPlusTypes = [
   "2pp",
 ];
 
+const newFontFace = (name: string, url: string) => {
+  const urlStr = `local("${name}"), url("${url}")`;
+  let fontface = new FontFace(name, urlStr);
+  if (fontface.family === "") {
+    fontface = new FontFace(name.replace(/[+ ]/g, ""), urlStr);
+  }
+  return fontface;
+};
+
 const fontfaces = [
   ...roundedMgenPlusWeights.flatMap((weight) =>
     roundedMgenPlusTypes.map((type) => {
-      const name = `Rounded-X Mgen+ ${type} ${weight}`;
-      return new FontFace(
-        name,
-        `local("${name}"), url("/rounded-x-mgenplus-20150602/rounded-x-mgenplus-${type}-${weight}.ttf")`,
+      return newFontFace(
+        `Rounded-X Mgen+ ${type} ${weight}`,
+        `/rounded-x-mgenplus-20150602/rounded-x-mgenplus-${type}-${weight}.ttf`,
       );
     }),
   ),
-  new FontFace(
-    "GenEi POPle Black",
-    `local("GenEi POPle Black"),
-    url("/GenEiPOPle_v1.0/GenEiPOPle-Bk.ttf")`,
-  ),
-  new FontFace(
-    "GenEi POPle Pw Black",
-    `local("GenEi POPle Pw Black"),
-    url("/GenEiPOPle_v1.0/GenEiPOPlePw-Bk.ttf")`,
-  ),
-  new FontFace(
+  newFontFace("GenEi POPle Black", "/GenEiPOPle_v1.0/GenEiPOPle-Bk.ttf"),
+  newFontFace("GenEi POPle Pw Black", "/GenEiPOPle_v1.0/GenEiPOPlePw-Bk.ttf"),
+  newFontFace(
     "GenEi Nu Gothic EB",
-    `local("GenEi Nu Gothic EB"),
-    url("/GenEiNuGothic-EB_v1.1/GenEiNuGothic-EB.ttf")`,
+    "/GenEiNuGothic-EB_v1.1/GenEiNuGothic-EB.ttf",
   ),
-  new FontFace(
+  newFontFace(
     "GenEi M Gothic v2 Black",
-    `local("GenEi M Gothic v2 Black"),
-    url("/GenEiMGothic_v2.0/GenEiMGothic2-Black.ttf")`,
+    "/GenEiMGothic_v2.0/GenEiMGothic2-Black.ttf",
   ),
-  new FontFace(
+  newFontFace(
     "GenEi M Gothic v2 Bold",
-    `local("GenEi M Gothic v2 Bold"),
-    url("/GenEiMGothic_v2.0/GenEiMGothic2-Bold.ttf")`,
+    "/GenEiMGothic_v2.0/GenEiMGothic2-Bold.ttf",
   ),
-  new FontFace(
+  newFontFace(
     "GenEi M Gothic v2 Heavy",
-    `local("GenEi M Gothic v2 Heavy"),
-    url("/GenEiMGothic_v2.0/GenEiMGothic2-Heavy.ttf")`,
+    "/GenEiMGothic_v2.0/GenEiMGothic2-Heavy.ttf",
   ),
-  new FontFace(
+  newFontFace(
     "GenEi M Gothic v2 Medium",
-    `local("GenEi M Gothic v2 Medium"),
-    url("/GenEiMGothic_v2.0/GenEiMGothic2-Medium.ttf")`,
+    "/GenEiMGothic_v2.0/GenEiMGothic2-Medium.ttf",
   ),
-  new FontFace(
+  newFontFace(
     "GenEi M Gothic v2 Regular",
-    `local("GenEi M Gothic v2 Regular"),
-    url("/GenEiMGothic_v2.0/GenEiMGothic2-Regular.ttf")`,
+    "/GenEiMGothic_v2.0/GenEiMGothic2-Regular.ttf",
   ),
-  new FontFace(
+  newFontFace(
     "GenEi LateGo v2 Medium",
-    `local("GenEi LateGo v2 Medium"),
-    url("/GenEiLatin-Separate_v2.1/GenEiLateGoN_v2.ttf")`,
+    "/GenEiLatin-Separate_v2.1/GenEiLateGoN_v2.ttf",
   ),
-  new FontFace(
+  newFontFace(
     "GenEi LateGo P v2 Medium",
-    `local("GenEi LateGo P v2 Medium"),
-    url("/GenEiLatin-Separate_v2.1/GenEiLateGoP_v2.ttf")`,
+    "/GenEiLatin-Separate_v2.1/GenEiLateGoP_v2.ttf",
   ),
-  new FontFace(
+  newFontFace(
     "GenEi LateMin v2 Medium",
-    `local("GenEi LateMin v2 Medium"),
-    url("/GenEiLatin-Separate_v2.1/GenEiLateMinN_v2.ttf")`,
+    "/GenEiLatin-Separate_v2.1/GenEiLateMinN_v2.ttf",
   ),
-  new FontFace(
+  newFontFace(
     "GenEi LateMin P v2 Medium",
-    `local("GenEi LateMin P v2 Medium"),
-    url("/GenEiLatin-Separate_v2.1/GenEiLateMinP_v2.ttf")`,
+    "/GenEiLatin-Separate_v2.1/GenEiLateMinP_v2.ttf",
   ),
-  new FontFace(
+  newFontFace(
     "GenEi Antique v5 Medium",
-    `local("GenEi Antique v5 Medium"),
-    url("/GenEiAntique_v5.1a/GenEiAntiqueNv5-M.ttf")`,
+    "/GenEiAntique_v5.1a/GenEiAntiqueNv5-M.ttf",
   ),
-  new FontFace(
+  newFontFace(
     "GenEi Antique Pv5 Medium",
-    `local("GenEi Antique Pv5 Medium"),
-    url("/GenEiAntique_v5.1a/GenEiAntiquePv5-M.ttf")`,
+    "/GenEiAntique_v5.1a/GenEiAntiquePv5-M.ttf",
   ),
 ];
 

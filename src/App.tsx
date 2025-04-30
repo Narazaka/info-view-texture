@@ -11,7 +11,43 @@ function App() {
   const [borderWidth, setBorderWidth] = useState(5);
   const [canvasWidth, setCanvasWidth] = useState(500);
   const [canvasHeight, setCanvasHeight] = useState(300);
+  const [padding, setPadding] = useState(20);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  const wrapText = (ctx: CanvasRenderingContext2D, text: string, x: number, y: number, maxWidth: number, lineHeight: number, charWrap: boolean = false) => {
+    if (charWrap) {
+      let line = '';
+      for (let i = 0; i < text.length; i++) {
+        const testLine = line + text[i];
+        const metrics = ctx.measureText(testLine);
+        const testWidth = metrics.width;
+        if (testWidth > maxWidth && line.length > 0) {
+          ctx.fillText(line, x, y);
+          line = text[i];
+          y += lineHeight;
+        } else {
+          line = testLine;
+        }
+      }
+      ctx.fillText(line, x, y);
+    } else {
+      const words = text.split(' ');
+      let line = '';
+      for (let n = 0; n < words.length; n++) {
+        const testLine = line + words[n] + ' ';
+        const metrics = ctx.measureText(testLine);
+        const testWidth = metrics.width;
+        if (testWidth > maxWidth && n > 0) {
+          ctx.fillText(line, x, y);
+          line = words[n] + ' ';
+          y += lineHeight;
+        } else {
+          line = testLine;
+        }
+      }
+      ctx.fillText(line, x, y);
+    }
+  };
 
   const handleDraw = () => {
     const canvas = canvasRef.current;
@@ -30,13 +66,15 @@ function App() {
         ctx.lineWidth = borderWidth;
         ctx.strokeRect(0, 0, canvas.width, canvas.height);
 
+        const contentWidth = canvas.width - padding * 2;
+
         // Draw title
         if (title) {
           ctx.fillStyle = textColor;
           ctx.font = 'bold 24px Arial';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'top';
-          ctx.fillText(title, canvas.width / 2, 10);
+          wrapText(ctx, title, canvas.width / 2, padding, contentWidth, 30, true); // Enable charWrap for title
         }
 
         // Draw quote
@@ -45,7 +83,7 @@ function App() {
           ctx.font = 'italic 20px Arial';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
-          ctx.fillText(`"${quote}"`, canvas.width / 2, canvas.height / 2);
+          wrapText(ctx, `"${quote}"`, canvas.width / 2, canvas.height / 2, contentWidth, 25, true); // Enable charWrap for quote
         }
 
         // Draw description
@@ -54,7 +92,7 @@ function App() {
           ctx.font = '16px Arial';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'bottom';
-          ctx.fillText(description, canvas.width / 2, canvas.height - 10);
+          wrapText(ctx, description, canvas.width / 2, canvas.height - padding, contentWidth, 20, true); // Enable charWrap for description
         }
       }
     }
@@ -127,6 +165,12 @@ function App() {
           value={canvasHeight}
           onChange={(e) => setCanvasHeight(Number(e.target.value))}
           placeholder="Canvas Height"
+        />
+        <input
+          type="number"
+          value={padding}
+          onChange={(e) => setPadding(Number(e.target.value))}
+          placeholder="Padding"
         />
         <button onClick={handleDraw}>Draw</button>
         <button onClick={handleDownload}>Download Image</button>

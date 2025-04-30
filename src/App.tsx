@@ -14,7 +14,7 @@ import { useState, useRef, useReducer, useCallback, useEffect } from "react";
 import type { TextProps } from "./util/TextProps";
 import { TextPropsView } from "./TextPropsView";
 import DrawText from "./DrawText";
-import html2canvas from "html2canvas";
+import rasterizehtml from "rasterizehtml";
 import { useLocalStorage } from "@mantine/hooks";
 import { useFonts } from "./util/fonts";
 
@@ -133,13 +133,25 @@ function App() {
   const handleDownloadSVG = () => {
     const target = targetRef.current;
     if (!target) return;
-    html2canvas(target).then((canvas) => {
-      const link = document.createElement("a");
-      link.href = canvas.toDataURL("image/png");
-      link.download = "canvas.png";
-      link.click();
-      link.remove();
-    });
+    const canvas = document.createElement("canvas");
+    canvas.width = canvasWidth;
+    canvas.height = canvasHeight;
+    rasterizehtml
+      .drawHTML(
+        `<html><head><style>html,body{padding:0;margin:0}</style></head><body>${
+          // biome-ignore lint/style/noNonNullAssertion: <explanation>
+          target.parentElement!.innerHTML
+        }</body></html>`,
+        canvas,
+      )
+      .then(() => {
+        const link = document.createElement("a");
+        link.href = canvas.toDataURL("image/png");
+        link.download = "canvas.png";
+        link.click();
+        link.remove();
+        canvas.remove();
+      });
   };
 
   return (
@@ -267,7 +279,7 @@ function App() {
         <div
           ref={targetRef}
           style={{
-            margin: "auto",
+            margin: "0 auto",
             width: canvasWidth,
             height: canvasHeight,
             border: `${borderWidth}px solid ${borderColor}`,

@@ -7,7 +7,7 @@ function DrawText({ props }: { props: TextProps }) {
         <div
           style={{
             fontSize: `${props.fontSize}px`,
-            fontFamily: props.fontFamily,
+            fontFamily: `"${props.fontFamily}"`,
             color: props.textColor,
             textAlign: props.textAlign,
             lineHeight: `${props.lineHeight}em`,

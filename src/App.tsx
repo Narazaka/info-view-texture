@@ -167,8 +167,7 @@ function App() {
           >
             Info View Shader
           </a>
-          用のテクスチャを作るやつです
-          <br />
+          用のテクスチャを作るやつです。
           <strong>
             保存するときちょっとズレたりするかもしれないから確認！
           </strong>
@@ -206,47 +205,53 @@ function App() {
           setText={setDescription}
           fonts={fonts}
         />
-        <Grid>
-          <Grid.Col span={1.5}>
+        <Grid align="center">
+          <Grid.Col span={1}>
             <NumberInput
+              size="xs"
               value={paddingX}
               onChange={(e) => setPaddingX(Number(e))}
               label="Padding X"
             />
           </Grid.Col>
-          <Grid.Col span={1.5}>
+          <Grid.Col span={1}>
             <NumberInput
+              size="xs"
               value={paddingY}
               onChange={(e) => setPaddingY(Number(e))}
               label="Padding Y"
             />
           </Grid.Col>
-          <Grid.Col span={3}>
+          <Grid.Col span={1.5}>
             <NumberInput
+              size="xs"
               value={borderWidth}
               onChange={(e) => setBorderWidth(Number(e))}
               label="Border Width"
             />
           </Grid.Col>
-          <Grid.Col span={3}>
+          <Grid.Col span={1.5}>
             <ColorInput
               label="Background Color"
+              size="xs"
               format="rgba"
               value={bgColor}
               onChange={(e) => setBgColor(e)}
             />
           </Grid.Col>
-          <Grid.Col span={3}>
+          <Grid.Col span={1.5}>
             <ColorInput
               label="Border Color"
+              size="xs"
               format="rgba"
               value={borderColor}
               onChange={(e) => setBorderColor(e)}
             />
           </Grid.Col>
-          <Grid.Col span={3}>
+          <Grid.Col span={1.5}>
             <Autocomplete
               type="number"
+              size="xs"
               min={1}
               value={`${canvasWidth}`}
               onChange={(e) => setCanvasWidth(Number(e))}
@@ -254,15 +259,21 @@ function App() {
               data={["128", "256", "512", "1024", "2048", "4096"]}
             />
           </Grid.Col>
-          <Grid.Col span={3}>
+          <Grid.Col span={1.5}>
             <Autocomplete
               type="number"
+              size="xs"
               min={1}
               value={`${canvasHeight}`}
               onChange={(e) => setCanvasHeight(Number(e))}
               label="Canvas Height"
               data={["128", "256", "512", "1024", "2048", "4096"]}
             />
+          </Grid.Col>
+          <Grid.Col span={2.5}>
+            <Button w="100%" onClick={handleDownloadSVG}>
+              Download PNG
+            </Button>
           </Grid.Col>
           <Grid.Col span={12}>
             {colorPresets.map((preset, index) => (
@@ -278,7 +289,6 @@ function App() {
             ))}
           </Grid.Col>
         </Grid>
-        <Button onClick={handleDownloadSVG}>Download PNG</Button>
       </Stack>
       <div style={{ marginTop: "1em" }}>
         <div

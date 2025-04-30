@@ -7,6 +7,7 @@ import {
   Grid,
   NumberInput,
   Stack,
+  Text,
   Title,
 } from "@mantine/core";
 import { useState, useRef, useReducer, useCallback, useEffect } from "react";
@@ -76,20 +77,20 @@ function App() {
   const fonts = useFonts(fontsAllowed === fontsAllowedStatus.allow);
 
   const [title, setTitle] = useTextProps({
-    text: "最強無敵生物",
+    text: "丸メガネ",
     fontFamily: "Rounded-X Mgen+ 1p black",
     fontSize: 52,
     textColor: "#fff",
     outlineColor: "#ff00a5",
   });
   const [quote, setQuote] = useTextProps({
-    text: "「私は最強無敵生物」",
+    text: "「メガネっていいよね！」",
     fontFamily: "GenEi POPle Black",
     textColor: "#ff00a5",
     outlineColor: "#fff",
   });
   const [description, setDescription] = useTextProps({
-    text: "これは説明です\nとてもつよい",
+    text: "VRChat用メガネ案外豊富で良い",
     fontFamily: "Rounded-X Mgen+ 1p heavy",
     textColor: "#fff",
     outlineColor: "#ff00a5",
@@ -144,7 +145,17 @@ function App() {
   return (
     <Container>
       <Stack>
-        <Title>Text to Image Generator</Title>
+        <Title>Info View Texture</Title>
+        <Text>
+          <a
+            href="https://narazaka.booth.pm/items/6837074"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Info View Shader
+          </a>
+          用のテクスチャを作るやつです
+        </Text>
         {fontsAllowed !== fontsAllowedStatus.allow && (
           <Alert>
             <Title>ローカルフォント一覧を許可</Title>

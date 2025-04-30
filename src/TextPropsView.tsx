@@ -60,6 +60,7 @@ export function TextPropsView({
           <Grid.Col span={2}>
             <NumberInput
               label="Scale X"
+              step={0.1}
               size="xs"
               value={text.scaleX}
               onChange={(value) => setText({ scaleX: Number(value) })}

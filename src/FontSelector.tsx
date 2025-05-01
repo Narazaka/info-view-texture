@@ -1,7 +1,8 @@
 import { Combobox, Text, TextInput, useCombobox } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
+import { useVirtualizer } from "@tanstack/react-virtual";
 import Fuse from "fuse.js";
-import { memo, useMemo } from "react";
+import { memo, useMemo, useRef } from "react";
 
 function FontOption({
   font,
@@ -32,27 +33,18 @@ function FontSelector({
   const combobox = useCombobox();
   const fuse = useMemo(() => new Fuse(fonts), [fonts]);
   const filteredFonts = fuse.search(fontFamily);
-  /*
-  const filteredFonts = fonts.filter((font) =>
-    font.replace(" ", "").toLowerCase().includes(fontFamilyLower),
-  );
-  */
+  const scrollRef = useRef<HTMLDivElement>(null);
   const options =
     fontFamily === ""
-      ? fonts.map((font) => <FontOption key={font} font={font} />)
+      ? fonts
       : fonts.indexOf(fontFamily) !== -1 // exact match
-        ? [fontFamily]
-            .map((font) => <FontOption key={font} font={font} />)
-            .concat([
-              <Combobox.Group key="all" label="すべてのフォント">
-                {fonts.map((font) => (
-                  <FontOption key={font} font={font} />
-                ))}
-              </Combobox.Group>,
-            ])
-        : filteredFonts.map((font) => (
-            <FontOption key={font.item} font={font.item} />
-          ));
+        ? [fontFamily, ""].concat(fonts)
+        : filteredFonts.map((font) => font.item);
+  const rowVirtualizer = useVirtualizer({
+    count: options.length,
+    getScrollElement: () => scrollRef.current,
+    estimateSize: () => 36,
+  });
   return (
     <Combobox
       store={combobox}
@@ -77,11 +69,46 @@ function FontSelector({
         />
       </Combobox.Target>
       <Combobox.Dropdown>
-        <Combobox.Options mah={380} style={{ overflowY: "auto" }}>
+        <Combobox.Options
+          mah={380}
+          style={{ overflowY: "auto" }}
+          ref={scrollRef}
+        >
           {options.length === 0 ? (
             <Combobox.Empty>なし</Combobox.Empty>
           ) : (
-            options
+            <div
+              style={{
+                height: `${rowVirtualizer.getTotalSize()}px`,
+                width: "100%",
+                position: "relative",
+              }}
+            >
+              {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+                const font = options[virtualRow.index];
+                return (
+                  <div
+                    key={font}
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      width: "100%",
+                      height: `${virtualRow.size}px`,
+                      transform: `translateY(${virtualRow.start}px)`,
+                    }}
+                  >
+                    {font === "" ? (
+                      <div style={{ padding: "10px 0" }}>
+                        <hr />
+                      </div>
+                    ) : (
+                      <FontOption font={font} />
+                    )}
+                  </div>
+                );
+              })}
+            </div>
           )}
         </Combobox.Options>
       </Combobox.Dropdown>

@@ -12,6 +12,7 @@
   "dependencies": {
     "@mantine/core": "^7.17.5",
     "@mantine/hooks": "^7.17.5",
+    "@tanstack/react-virtual": "^3.13.6",
     "es-toolkit": "^1.36.0",
     "fuse.js": "^7.1.0",
     "react": "^19.0.0",

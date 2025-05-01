@@ -108,7 +108,7 @@ function App() {
   const [borderWidth, setBorderWidth] = useState(12);
   const [canvasWidth, setCanvasWidth] = useState(512);
   const [canvasHeight, setCanvasHeight] = useState(256);
-  const [paddingX, setPaddingX] = useState(10);
+  const [paddingX, setPaddingX] = useState(9);
   const [paddingY, setPaddingY] = useState(10);
   const targetRef = useRef<HTMLCanvasElement>(null);
 

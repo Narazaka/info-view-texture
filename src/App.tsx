@@ -171,6 +171,7 @@ function App() {
     ],
   );
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const canvas = targetRef.current;
     if (!canvas) return;
@@ -180,7 +181,7 @@ function App() {
       ctx,
       ...drawParams,
     });
-  }, [drawParams]);
+  }, [drawParams, fonts]);
 
   return (
     <Container>

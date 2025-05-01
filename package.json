@@ -13,7 +13,6 @@
     "@mantine/core": "^7.17.5",
     "@mantine/hooks": "^7.17.5",
     "es-toolkit": "^1.36.0",
-    "rasterizehtml": "^1.3.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "use-debounce": "^10.0.4"

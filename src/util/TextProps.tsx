@@ -3,6 +3,7 @@ export type TextProps = {
   textColor: string;
   outlineColor: string;
   outlineWidth: number;
+  outlineType: "thick" | "blur";
   fontSize: number;
   fontFamily: string;
   fontWeight: "bold" | "normal";

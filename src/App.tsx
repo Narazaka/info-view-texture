@@ -10,13 +10,19 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import { useState, useRef, useReducer, useCallback, useEffect } from "react";
+import {
+  useState,
+  useRef,
+  useReducer,
+  useCallback,
+  useEffect,
+  useMemo,
+} from "react";
 import type { TextProps } from "./util/TextProps";
-import { TextPropsView } from "./TextPropsView";
-import DrawText from "./DrawText";
-import rasterizehtml from "rasterizehtml";
+import TextPropsView from "./TextPropsView";
 import { useLocalStorage } from "@mantine/hooks";
 import { useFonts } from "./util/fonts";
+import { draw } from "./util/draw";
 
 type ColorPreset = {
   textColor: string;
@@ -47,6 +53,7 @@ const defaultTextProps: TextProps = {
   textColor: "#fff",
   outlineColor: "#000",
   outlineWidth: 7,
+  outlineType: "thick",
   fontSize: 40,
   fontFamily: "Arial",
   fontWeight: "normal",
@@ -102,8 +109,8 @@ function App() {
   const [canvasWidth, setCanvasWidth] = useState(512);
   const [canvasHeight, setCanvasHeight] = useState(256);
   const [paddingX, setPaddingX] = useState(10);
-  const [paddingY, setPaddingY] = useState(5);
-  const targetRef = useRef<HTMLDivElement>(null);
+  const [paddingY, setPaddingY] = useState(10);
+  const targetRef = useRef<HTMLCanvasElement>(null);
 
   const applyColorPreset = useCallback(
     (preset: ColorPreset) => {
@@ -134,26 +141,46 @@ function App() {
   const handleDownloadSVG = () => {
     const target = targetRef.current;
     if (!target) return;
-    const canvas = document.createElement("canvas");
-    canvas.width = canvasWidth;
-    canvas.height = canvasHeight;
-    rasterizehtml
-      .drawHTML(
-        `<html><head><style>html,body{padding:0;margin:0}</style></head><body>${
-          // biome-ignore lint/style/noNonNullAssertion: <explanation>
-          target.parentElement!.innerHTML
-        }</body></html>`,
-        canvas,
-      )
-      .then(() => {
-        const link = document.createElement("a");
-        link.href = canvas.toDataURL("image/png");
-        link.download = "canvas.png";
-        link.click();
-        link.remove();
-        canvas.remove();
-      });
+    const link = document.createElement("a");
+    link.href = target.toDataURL("image/png");
+    link.download = "canvas.png";
+    link.click();
+    link.remove();
   };
+
+  const drawParams = useMemo(
+    () => ({
+      borderWidth,
+      bgColor,
+      borderColor,
+      paddingX,
+      paddingY,
+      title,
+      quote,
+      description,
+    }),
+    [
+      borderWidth,
+      bgColor,
+      borderColor,
+      paddingX,
+      paddingY,
+      title,
+      quote,
+      description,
+    ],
+  );
+
+  useEffect(() => {
+    const canvas = targetRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    draw({
+      ctx,
+      ...drawParams,
+    });
+  }, [drawParams]);
 
   return (
     <Container>
@@ -290,33 +317,8 @@ function App() {
           </Grid.Col>
         </Grid>
       </Stack>
-      <div style={{ marginTop: "1em" }}>
-        <div
-          ref={targetRef}
-          style={{
-            margin: "0 auto",
-            width: canvasWidth,
-            height: canvasHeight,
-            border: `${borderWidth}px solid ${borderColor}`,
-            boxSizing: "border-box",
-            backgroundColor: bgColor,
-            position: "relative",
-            padding: `${paddingY}px ${paddingX}px`,
-          }}
-        >
-          <DrawText
-            props={title}
-            width={canvasWidth - (paddingX + borderWidth) * 2}
-          />
-          <DrawText
-            props={quote}
-            width={canvasWidth - (paddingX + borderWidth) * 2}
-          />
-          <DrawText
-            props={description}
-            width={canvasWidth - (paddingX + borderWidth) * 2}
-          />
-        </div>
+      <div style={{ marginTop: "1em", textAlign: "center" }}>
+        <canvas ref={targetRef} width={canvasWidth} height={canvasHeight} />
       </div>
     </Container>
   );

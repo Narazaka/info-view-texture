@@ -9,8 +9,9 @@ import {
   Slider,
 } from "@mantine/core";
 import type { TextProps } from "./util/TextProps";
+import { memo } from "react";
 
-export function TextPropsView({
+function TextPropsView({
   title,
   text,
   setText,
@@ -32,7 +33,7 @@ export function TextPropsView({
       </Grid.Col>
       <Grid.Col span={9}>
         <Grid>
-          <Grid.Col span={2}>
+          <Grid.Col span={1.5}>
             <NumberInput
               label="Font Size"
               size="xs"
@@ -40,7 +41,7 @@ export function TextPropsView({
               onChange={(value) => setText({ fontSize: Number(value) })}
             />
           </Grid.Col>
-          <Grid.Col span={2}>
+          <Grid.Col span={1.5}>
             <NumberInput
               label="Line Height"
               size="xs"
@@ -74,7 +75,7 @@ export function TextPropsView({
               onChange={(value) => setText({ scaleX: Number(value) })}
             />
           </Grid.Col>
-          <Grid.Col span={2}>
+          <Grid.Col span={1.5}>
             <Select
               label="Alignment"
               size="xs"
@@ -92,7 +93,7 @@ export function TextPropsView({
             />
           </Grid.Col>
 
-          <Grid.Col span={2}>
+          <Grid.Col span={1.5}>
             <Switch
               label="Bold"
               size="xs"
@@ -100,6 +101,19 @@ export function TextPropsView({
               onChange={(e) =>
                 setText({
                   fontWeight: e.currentTarget.checked ? "bold" : "normal",
+                })
+              }
+            />
+          </Grid.Col>
+
+          <Grid.Col span={1}>
+            <Switch
+              label="Blur"
+              size="xs"
+              checked={text.outlineType === "blur"}
+              onChange={(e) =>
+                setText({
+                  outlineType: e.currentTarget.checked ? "blur" : "thick",
                 })
               }
             />
@@ -138,3 +152,5 @@ export function TextPropsView({
     </Grid>
   );
 }
+
+export default memo(TextPropsView);

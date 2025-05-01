@@ -220,51 +220,27 @@ function App() {
           </Alert>
         )}
         <TextPropsView
-          title="Title"
+          title="タイトル"
           text={title}
           setText={setTitle}
           fonts={fonts}
         />
         <TextPropsView
-          title="Quote"
+          title="台詞？"
           text={quote}
           setText={setQuote}
           fonts={fonts}
         />
         <TextPropsView
-          title="Description"
+          title="説明？"
           text={description}
           setText={setDescription}
           fonts={fonts}
         />
         <Grid align="center">
-          <Grid.Col span={1}>
-            <NumberInput
-              size="xs"
-              value={paddingX}
-              onChange={(e) => setPaddingX(Number(e))}
-              label="Padding X"
-            />
-          </Grid.Col>
-          <Grid.Col span={1}>
-            <NumberInput
-              size="xs"
-              value={paddingY}
-              onChange={(e) => setPaddingY(Number(e))}
-              label="Padding Y"
-            />
-          </Grid.Col>
-          <Grid.Col span={1.5}>
-            <NumberInput
-              size="xs"
-              value={borderWidth}
-              onChange={(e) => setBorderWidth(Number(e))}
-              label="Border Width"
-            />
-          </Grid.Col>
           <Grid.Col span={1.5}>
             <ColorInput
-              label="Background Color"
+              label="背景色"
               size="xs"
               format="rgba"
               value={bgColor}
@@ -273,11 +249,36 @@ function App() {
           </Grid.Col>
           <Grid.Col span={1.5}>
             <ColorInput
-              label="Border Color"
+              label="ふち色"
               size="xs"
               format="rgba"
               value={borderColor}
               onChange={(e) => setBorderColor(e)}
+            />
+          </Grid.Col>
+          <Grid.Col span={1}>
+            <NumberInput
+              size="xs"
+              value={paddingX}
+              onChange={(e) => setPaddingX(Number(e))}
+              label="余白 ←→"
+            />
+          </Grid.Col>
+          <Grid.Col span={1}>
+            <NumberInput
+              size="xs"
+              value={paddingY}
+              onChange={(e) => setPaddingY(Number(e))}
+              label="余白 ↑↓"
+            />
+          </Grid.Col>
+          <Grid.Col span={1.5}>
+            <NumberInput
+              size="xs"
+              value={borderWidth}
+              onChange={(e) => setBorderWidth(Number(e))}
+              label="ふち幅"
+              min={0}
             />
           </Grid.Col>
           <Grid.Col span={1.5}>
@@ -287,7 +288,7 @@ function App() {
               min={1}
               value={`${canvasWidth}`}
               onChange={(e) => setCanvasWidth(Number(e))}
-              label="Canvas Width"
+              label="画像幅"
               data={["128", "256", "512", "1024", "2048", "4096"]}
             />
           </Grid.Col>
@@ -298,13 +299,13 @@ function App() {
               min={1}
               value={`${canvasHeight}`}
               onChange={(e) => setCanvasHeight(Number(e))}
-              label="Canvas Height"
+              label="画像高さ"
               data={["128", "256", "512", "1024", "2048", "4096"]}
             />
           </Grid.Col>
           <Grid.Col span={2.5}>
             <Button w="100%" onClick={handleDownload}>
-              Download PNG
+              画像をダウンロード
             </Button>
           </Grid.Col>
           <Grid.Col span={12}>

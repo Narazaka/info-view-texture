@@ -35,7 +35,7 @@ function TextPropsView({
         <Grid>
           <Grid.Col span={1.5}>
             <NumberInput
-              label="Font Size"
+              label="大きさ"
               size="xs"
               value={text.fontSize}
               onChange={(value) => setText({ fontSize: Number(value) })}
@@ -43,7 +43,7 @@ function TextPropsView({
           </Grid.Col>
           <Grid.Col span={1.5}>
             <NumberInput
-              label="Line Height"
+              label="行の高さ"
               size="xs"
               value={text.lineHeight}
               onChange={(value) => setText({ lineHeight: Number(value) })}
@@ -52,7 +52,7 @@ function TextPropsView({
           </Grid.Col>
           <Grid.Col span={2}>
             <NumberInput
-              label="Stroke Width"
+              label="ふち幅"
               size="xs"
               value={text.outlineWidth}
               onChange={(value) => setText({ outlineWidth: Number(value) })}
@@ -60,14 +60,13 @@ function TextPropsView({
           </Grid.Col>
           <Grid.Col span={2}>
             <NumberInput
-              label="Scale X"
+              label="伸縮率"
               step={0.1}
               size="xs"
               value={text.scaleX}
               onChange={(value) => setText({ scaleX: Number(value) })}
             />
             <Slider
-              label="Scale X"
               value={text.scaleX}
               step={0.01}
               min={0.2}
@@ -77,7 +76,7 @@ function TextPropsView({
           </Grid.Col>
           <Grid.Col span={1.5}>
             <Select
-              label="Alignment"
+              label="揃え"
               size="xs"
               value={text.textAlign}
               onChange={(value) =>
@@ -85,9 +84,9 @@ function TextPropsView({
               }
               data={
                 [
-                  { value: "left", label: "Left" },
-                  { value: "center", label: "Center" },
-                  { value: "right", label: "Right" },
+                  { value: "left", label: "左" },
+                  { value: "center", label: "中央" },
+                  { value: "right", label: "右" },
                 ] satisfies { value: CanvasTextAlign; label: string }[]
               }
             />
@@ -95,7 +94,7 @@ function TextPropsView({
 
           <Grid.Col span={1.5}>
             <Switch
-              label="Bold"
+              label="太字"
               size="xs"
               checked={text.fontWeight === "bold"}
               onChange={(e) =>
@@ -106,9 +105,9 @@ function TextPropsView({
             />
           </Grid.Col>
 
-          <Grid.Col span={1}>
+          <Grid.Col span={1.5}>
             <Switch
-              label="Blur"
+              label="ぼかし"
               size="xs"
               checked={text.outlineType === "blur"}
               onChange={(e) =>
@@ -121,7 +120,7 @@ function TextPropsView({
 
           <Grid.Col span={3}>
             <ColorInput
-              label="Text Color"
+              label="文字色"
               size="xs"
               format="rgba"
               value={text.textColor}
@@ -130,7 +129,7 @@ function TextPropsView({
           </Grid.Col>
           <Grid.Col span={3}>
             <ColorInput
-              label="Stroke Color"
+              label="ふち色"
               size="xs"
               format="rgba"
               value={text.outlineColor}

@@ -77,9 +77,6 @@ function drawTextThickOutlined(
 ) {
   const draw = genDrawText(textProps);
   drawOutline(ctx, x, y, textProps.outlineColor, textProps.outlineWidth, draw);
-  ctx.globalCompositeOperation = "xor";
-  draw(ctx, x, y, textProps.textColor);
-  ctx.globalCompositeOperation = "source-over";
   draw(ctx, x, y, textProps.textColor);
 }
 

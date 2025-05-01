@@ -77,6 +77,9 @@ function drawTextThickOutlined(
 ) {
   const draw = genDrawText(textProps);
   drawOutline(ctx, x, y, textProps.outlineColor, textProps.outlineWidth, draw);
+  ctx.globalCompositeOperation = "xor";
+  draw(ctx, x, y, textProps.textColor);
+  ctx.globalCompositeOperation = "source-over";
   draw(ctx, x, y, textProps.textColor);
 }
 
@@ -110,6 +113,7 @@ function drawBorderedRect(
     width - borderWidth * 2,
     height - borderWidth * 2,
   );
+  if (borderWidth === 0) return;
   ctx.strokeStyle = borderColor;
   ctx.lineWidth = borderWidth;
   ctx.strokeRect(

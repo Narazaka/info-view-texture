@@ -41,6 +41,13 @@ const colorPresets: ColorPreset[] = [
   },
   {
     textColor: "#fff",
+    outlineColor: "rgba(255, 255, 255, 0)",
+    bgColor: "#000",
+    borderColor: "#fff",
+    invertQuote: false,
+  },
+  {
+    textColor: "#fff",
     outlineColor: "#000",
     bgColor: "#fff",
     borderColor: "#000",
@@ -307,6 +314,7 @@ function App() {
                 key={index}
                 onClick={() => applyColorPreset(preset)}
                 color={preset.outlineColor}
+                bd="1px dotted gray"
                 style={{ marginRight: "1em" }}
               >
                 {" "}
@@ -315,7 +323,18 @@ function App() {
           </Grid.Col>
         </Grid>
       </Stack>
-      <div style={{ marginTop: "1em", textAlign: "center" }}>
+      <div
+        style={{
+          marginTop: ".5em",
+          paddingTop: ".5em",
+          textAlign: "center",
+          backgroundImage: `repeating-conic-gradient(from 0deg,
+		#ffffff 0deg 90deg,
+		#cccccc 90deg 180deg`,
+          backgroundSize: "30px 30px",
+          backgroundColor: "#fff",
+        }}
+      >
         <canvas ref={targetRef} width={canvasWidth} height={canvasHeight} />
       </div>
     </Container>

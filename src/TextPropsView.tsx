@@ -5,11 +5,11 @@ import {
   ColorInput,
   Switch,
   Select,
-  Autocomplete,
   Slider,
 } from "@mantine/core";
 import type { TextProps } from "./util/TextProps";
 import { memo } from "react";
+import FontSelector from "./FontSelector";
 
 function TextPropsView({
   title,
@@ -139,12 +139,10 @@ function TextPropsView({
           </Grid.Col>
 
           <Grid.Col span={6}>
-            <Autocomplete
-              label="Font Family"
-              size="xs"
-              value={text.fontFamily}
-              onChange={(value) => setText({ fontFamily: value })}
-              data={fonts}
+            <FontSelector
+              fontFamily={text.fontFamily}
+              setFontFamily={(value) => setText({ fontFamily: value })}
+              fonts={fonts}
             />
           </Grid.Col>
         </Grid>

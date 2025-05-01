@@ -195,9 +195,6 @@ function App() {
             Info View Shader
           </a>
           用のテクスチャを作るやつです。
-          <strong>
-            保存するときちょっとズレたりするかもしれないから確認！
-          </strong>
         </Text>
         {fontsAllowed !== fontsAllowedStatus.allow && (
           <Alert>

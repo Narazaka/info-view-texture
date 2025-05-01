@@ -33,14 +33,6 @@ const newFontFace = (name: string, url: string) => {
 };
 
 const fontfaces = [
-  ...roundedMgenPlusWeights.flatMap((weight) =>
-    roundedMgenPlusTypes.map((type) => {
-      return newFontFace(
-        `Rounded-X Mgen+ ${type} ${weight}`,
-        `/rounded-x-mgenplus-20150602/rounded-x-mgenplus-${type}-${weight}.ttf`,
-      );
-    }),
-  ),
   newFontFace("GenEi POPle Black", "/GenEiPOPle_v1.0/GenEiPOPle-Bk.ttf"),
   newFontFace("GenEi POPle Pw Black", "/GenEiPOPle_v1.0/GenEiPOPlePw-Bk.ttf"),
   newFontFace(
@@ -90,6 +82,14 @@ const fontfaces = [
   newFontFace(
     "GenEi Antique Pv5 Medium",
     "/GenEiAntique_v5.1a/GenEiAntiquePv5-M.ttf",
+  ),
+  ...roundedMgenPlusWeights.flatMap((weight) =>
+    roundedMgenPlusTypes.map((type) => {
+      return newFontFace(
+        `Rounded-X Mgen+ ${type} ${weight}`,
+        `/rounded-x-mgenplus-20150602/rounded-x-mgenplus-${type}-${weight}.ttf`,
+      );
+    }),
   ),
 ];
 

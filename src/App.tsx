@@ -138,12 +138,12 @@ function App() {
     applyColorPreset(colorPresets[0]);
   }, [applyColorPreset]);
 
-  const handleDownloadSVG = () => {
+  const handleDownload = () => {
     const target = targetRef.current;
     if (!target) return;
     const link = document.createElement("a");
     link.href = target.toDataURL("image/png");
-    link.download = "canvas.png";
+    link.download = `${title.text || "canvas"}.png`;
     link.click();
     link.remove();
   };
@@ -295,7 +295,7 @@ function App() {
             />
           </Grid.Col>
           <Grid.Col span={2.5}>
-            <Button w="100%" onClick={handleDownloadSVG}>
+            <Button w="100%" onClick={handleDownload}>
               Download PNG
             </Button>
           </Grid.Col>
